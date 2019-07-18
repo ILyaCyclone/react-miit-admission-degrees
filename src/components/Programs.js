@@ -30,8 +30,8 @@ export default function Programs() {
       setFilter({...filter, year});
     }
     function onLevelChange(e) {
-      const changedLevel = e.target.value;
-      setFilter({...filter, level: changedLevel});
+      const level = e.target.value;
+      setFilter({...filter, level});
     }
   
     return (
@@ -43,6 +43,6 @@ export default function Programs() {
   }
 
   function formUrl(year, level, training) {
-      return "https://cors-anywhere.herokuapp.com/"+
-       `https://rut-miit.ru/data-service/data/reception-plan?city=1&level=${level}&training=${training}&year=${year}&context_path=&id_lang=1`;
+      //return "https://cors-anywhere.herokuapp.com/"+
+       return `https://rut-miit.ru/data-service/data/reception-plan?city=1&level=${level}&training=${training}&year=${year}&context_path=&id_lang=1`;
   }

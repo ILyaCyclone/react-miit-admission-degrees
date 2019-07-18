@@ -4,7 +4,8 @@ import Filters from "./Filters";
 
 export default function Programs() {
   const [availableFilters, setAvailableFilters] = useState({
-    years: [2019]
+    years: [2019, 2018, 2017],
+    levels: []
 })
     const [filter, setFilter] = useState({
         year: 2019,
@@ -19,17 +20,29 @@ export default function Programs() {
       fetch(formUrl(filter.year, filter.level, filter.training))
       .then(response => response.json())
       .then(data => {
-          console.log(data);
           setPrograms(data);
+          setAvailableFilters({...availableFilters, levels: data.kindsLevelFormation});
       });
-    }, [])
+    }, [filter])
+
+    function onYearChange(e) {
+      const year = e.target.value;
+      setFilter({...filter, year});
+    }
+    function onLevelChange(e) {
+      const changedLevel = e.target.value;
+      setFilter({...filter, level: changedLevel});
+    }
   
     return (
-      <Filters availableFilters={availableFilters} filters={filters}/>
+      <>
+      <Filters availableFilters={availableFilters} filter={filter} onYearChange={onYearChange} onLevelChange={onLevelChange}/>
       <ProgramList list={programs.result}/>
+      </>
     );
   }
 
   function formUrl(year, level, training) {
-      return `https://rut-miit.ru/data-service/data/reception-plan?city=1&level=${level}&training=${training}&year=${year}&context_path=&id_lang=1`;
+      return "https://cors-anywhere.herokuapp.com/"+
+       `https://rut-miit.ru/data-service/data/reception-plan?city=1&level=${level}&training=${training}&year=${year}&context_path=&id_lang=1`;
   }
